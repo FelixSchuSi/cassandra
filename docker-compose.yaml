@@ -3,7 +3,6 @@ services:
     jupyter:
       user: root
       build: ./jupyter/
-      # image: jupyter/scipy-notebook:latest
       environment:
         JUPYTER_ENABLE_LAB: "yes"
         GRANT_SUDO: "yes"

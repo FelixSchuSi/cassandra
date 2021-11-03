@@ -1,6 +1,3 @@
-FROM jupyter/scipy-notebook:latest
-# COPY ./requirements.txt /tmp/
-# RUN pip install --requirement /tmp/requirements.txt
+FROM jupyter/scipy-notebook:2021-11-01
 USER root
-RUN pip install cassandra-driver
-# CMD start-notebook.sh
+RUN pip install cassandra-driver==3.25.0
