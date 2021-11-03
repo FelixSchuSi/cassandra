@@ -1,0 +1,13 @@
+version: '3.8'
+services: 
+    jupyter:
+      user: root
+      build: ./jupyter/
+      # image: jupyter/scipy-notebook:latest
+      environment:
+        JUPYTER_ENABLE_LAB: "yes"
+        GRANT_SUDO: "yes"
+      ports:
+      - 8888:8888
+    cassandra:
+      image: cassandra:4.0.1
