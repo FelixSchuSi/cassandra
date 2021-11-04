@@ -1,4 +1,9 @@
+#https://gist.github.com/naumanbadar/aad6a25974b30adcb3c89b5f868627da
 version: '3.8'
+
+networks:
+  cassandra:
+
 services: 
     jupyter:
       user: root
@@ -7,6 +12,79 @@ services:
         JUPYTER_ENABLE_LAB: "yes"
         GRANT_SUDO: "yes"
       ports:
-      - 8888:8888
-    cassandra:
+        - 8888:8888
+      networks:
+        - cassandra
+
+    cassandra0:
       image: cassandra:4.0.1
+      mem_limit: 1g
+      volumes:
+        - "cassandra_data_0:/var/lib/cassandra"
+      environment:
+        - "CASSANDRA_SEEDS=cassandra0"
+        - "CASSANDRA_CLUSTER_NAME=Test Cluster"
+        - "CASSANDRA_DC=se1"
+        - "CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch"
+        - "MAX_HEAP_SIZE=1G"
+        - "HEAP_NEWSIZE=100M"
+      networks:
+        - cassandra
+      healthcheck:
+        test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
+        interval: 5s
+        timeout: 7s
+        retries: 60
+
+    cassandra1:
+      image: cassandra:4.0.1
+      mem_limit: 1g
+      volumes:
+        - "cassandra_data_1:/var/lib/cassandra"
+      environment:
+        - "CASSANDRA_SEEDS=cassandra0"
+        - "CASSANDRA_CLUSTER_NAME=Test Cluster"
+        - "CASSANDRA_DC=se1"
+        - "CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch"
+        - "MAX_HEAP_SIZE=1G"
+        - "HEAP_NEWSIZE=100M"
+      depends_on:
+        cassandra0:
+          condition: service_healthy
+      networks:
+        - cassandra
+      # ports:
+      #   - "9041:9042"
+      healthcheck:
+        test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
+        interval: 5s
+        timeout: 10s
+        retries: 60
+
+    cassandra2:
+      image: cassandra:4.0.1
+      mem_limit: 1g
+      volumes:
+        - "cassandra_data_2:/var/lib/cassandra"
+      environment:
+        - "CASSANDRA_SEEDS=cassandra0"
+        - "CASSANDRA_CLUSTER_NAME=Test Cluster"
+        - "CASSANDRA_DC=se1"
+        - "CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch"
+        - "MAX_HEAP_SIZE=1G"
+        - "HEAP_NEWSIZE=100M"
+      networks:
+        - cassandra
+      depends_on:
+        cassandra1:
+          condition: service_healthy
+      healthcheck:
+        test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
+        interval: 5s
+        timeout: 7s
+        retries: 60
+
+volumes:
+  cassandra_data_0:
+  cassandra_data_1:
+  cassandra_data_2:
