@@ -40,7 +40,7 @@ Alle Networks aufzählen
 ```
 docker network ls
 # Alle networks ohne Referenz entfernen
-docker network rm <ID>
+docker network prune
 # Networks manuell entfernen
 docker network rm <ID>
 ```
@@ -49,7 +49,7 @@ Alle Volumes aufzählen
 ```
 docker volume ls
 # Alle volumes ohne Referenz entfernen
-docker volume rm <ID>
+docker volume prune
 # Volumes manuell entfernen
 docker volume rm <ID>
 ```
