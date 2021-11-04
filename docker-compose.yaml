@@ -1,7 +1,10 @@
 version: '3.8'
 
 networks:
-  cassandra:
+  cassandra-net:
+    ipam:
+      config:
+          - subnet: 172.20.0.0/24
 
 services: 
     jupyter:
@@ -13,7 +16,10 @@ services:
       ports:
         - 8888:8888
       networks:
-        - cassandra
+        cassandra-net:
+          ipv4_address: 172.20.0.5
+      volumes:
+        - "jupyter_data:/home/jovyan/work"
 
     cassandra0:
       build: ./cassandra/
@@ -28,12 +34,15 @@ services:
         - "MAX_HEAP_SIZE=1G"
         - "HEAP_NEWSIZE=100M"
       networks:
-        - cassandra
+        cassandra-net:
+          ipv4_address: 172.20.0.6
+      ports:
+        - "9040:9042"
       healthcheck:
         test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
-        interval: 5s
-        timeout: 7s
-        retries: 60
+        interval: 15s
+        timeout: 15s
+        retries: 100
 
     cassandra1:
       build: ./cassandra/
@@ -51,12 +60,15 @@ services:
         cassandra0:
           condition: service_healthy
       networks:
-        - cassandra
+        cassandra-net:
+          ipv4_address: 172.20.0.7
+      ports:
+        - "9041:9042"
       healthcheck:
         test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
-        interval: 5s
-        timeout: 10s
-        retries: 60
+        interval: 15s
+        timeout: 15s
+        retries: 100
 
     cassandra2:
       build: ./cassandra/
@@ -71,17 +83,21 @@ services:
         - "MAX_HEAP_SIZE=1G"
         - "HEAP_NEWSIZE=100M"
       networks:
-        - cassandra
+        cassandra-net:
+          ipv4_address: 172.20.0.8
+      ports:
+        - "9042:9042"
       depends_on:
         cassandra1:
           condition: service_healthy
       healthcheck:
         test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
-        interval: 5s
-        timeout: 7s
-        retries: 60
+        interval: 15s
+        timeout: 15s
+        retries: 100
 
 volumes:
   cassandra_data_0:
   cassandra_data_1:
   cassandra_data_2:
+  jupyter_data:
