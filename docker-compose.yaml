@@ -17,7 +17,7 @@ services:
         - cassandra
 
     cassandra0:
-      image: cassandra:4.0.1
+      build: ./cassandra/
       mem_limit: 1g
       volumes:
         - "cassandra_data_0:/var/lib/cassandra"
@@ -37,7 +37,7 @@ services:
         retries: 60
 
     cassandra1:
-      image: cassandra:4.0.1
+      build: ./cassandra/
       mem_limit: 1g
       volumes:
         - "cassandra_data_1:/var/lib/cassandra"
@@ -53,8 +53,6 @@ services:
           condition: service_healthy
       networks:
         - cassandra
-      # ports:
-      #   - "9041:9042"
       healthcheck:
         test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
         interval: 5s
@@ -62,7 +60,7 @@ services:
         retries: 60
 
     cassandra2:
-      image: cassandra:4.0.1
+      build: ./cassandra/
       mem_limit: 1g
       volumes:
         - "cassandra_data_2:/var/lib/cassandra"
