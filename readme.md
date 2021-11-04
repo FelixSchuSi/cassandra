@@ -24,3 +24,32 @@ dir(cluster) # Wenn hier alle Funktionen & Properties geloggt werden hat es gekl
 3. Sonst ist [Google Dataset Search](https://datasetsearch.research.google.com/) eine gute Quelle
 
     
+### Docker snippets
+
+Alle Images entfernen
+```
+docker rmi -f $(docker images -a -q)
+```
+
+Alle Container entfernen
+```
+docker rm -f $(docker ps -qa)
+```
+
+Alle Networks aufzählen
+```
+docker network ls
+# Alle networks ohne Referenz entfernen
+docker network rm <ID>
+# Networks manuell entfernen
+docker network rm <ID>
+```
+
+Alle Volumes aufzählen
+```
+docker volume ls
+# Alle volumes ohne Referenz entfernen
+docker volume rm <ID>
+# Volumes manuell entfernen
+docker volume rm <ID>
+```
