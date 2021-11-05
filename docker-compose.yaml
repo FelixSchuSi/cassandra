@@ -2,9 +2,9 @@ version: '3.8'
 
 networks:
   cassandra-net:
-    ipam:
-      config:
-          - subnet: 172.20.0.0/24
+    # ipam:
+    #   config:
+    #       - subnet: 172.20.0.0/24
 
 services: 
     jupyter:
@@ -17,7 +17,7 @@ services:
         - 8888:8888
       networks:
         cassandra-net:
-          ipv4_address: 172.20.0.5
+          # ipv4_address: 172.20.0.5
       volumes:
         - "jupyter_data:/home/jovyan/work"
 
@@ -35,7 +35,7 @@ services:
         - "HEAP_NEWSIZE=100M"
       networks:
         cassandra-net:
-          ipv4_address: 172.20.0.6
+          # ipv4_address: 172.20.0.6
       ports:
         - "9040:9042"
       healthcheck:
@@ -61,7 +61,7 @@ services:
           condition: service_healthy
       networks:
         cassandra-net:
-          ipv4_address: 172.20.0.7
+          # ipv4_address: 172.20.0.7
       ports:
         - "9041:9042"
       healthcheck:
@@ -84,7 +84,7 @@ services:
         - "HEAP_NEWSIZE=100M"
       networks:
         cassandra-net:
-          ipv4_address: 172.20.0.8
+          # ipv4_address: 172.20.0.8
       ports:
         - "9042:9042"
       depends_on:

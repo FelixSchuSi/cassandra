@@ -53,3 +53,26 @@ docker volume prune
 # Volumes manuell entfernen
 docker volume rm <ID>
 ```
+
+### Falls irgendwas falsch läuft
+````
+# Neue Version pullen
+git pull
+
+# Alle Docker images entfernen
+docker rmi -f $(docker images -a -q)
+# Alle Container entfernen
+docker rm -f $(docker ps -qa)
+# Alle volumes ohne Referenz entfernen
+docker volume prune
+# Networks manuell entfernen
+docker network rm <ID>
+
+
+# Die Volumes "vortrag_cassandra_data_0", "vortrag_cassandra_data_1", "vortrag_cassandra_data_2" und "vortrag_jupyter_data" sollten hier nicht mehr aufgezählt werden
+docker volume ls
+
+# Das Network "vortrag_cassandra-net" sollte hier nicht mehr aufgezählt werden
+docker network ls
+
+```
