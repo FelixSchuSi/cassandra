@@ -20,5 +20,5 @@ jobs:
         with:
           version: '1.29.2'
       - run: docker-compose up -d --build --force-recreate
-      # - run: docker ps > docker-ps.txt
+      - run: docker ps
       # - run: docker ps > docker-ps.txt
