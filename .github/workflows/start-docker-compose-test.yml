@@ -16,7 +16,9 @@ jobs:
         os: [macos-latest, ubuntu-latest, "windows-latest"]
     steps:
       - uses: actions/checkout@v2
-      - uses: isbang/compose-action@v1.0.0
+      - uses: KengoTODA/actions-setup-docker-compose@main
         with:
-          compose-file: 'docker-compose.yaml'
-          down-flags: '--volumes'
+          version: '1.29.2'
+      - run: docker-compose up -d --build --force-recreate
+      # - run: docker ps > docker-ps.txt
+      # - run: docker ps > docker-ps.txt
